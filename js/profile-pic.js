@@ -22,6 +22,9 @@ window.fbAsyncInit = function() {
 var IMAGE_SIZE = 320;
 
 function handleLoginStatusResponse(response) {
+    var profileImageElement = document.getElementById('profile_image');
+    var placeholderUrl = "images/placeholder.png";
+
     if (response.status === 'connected') {
         // Logged into the app and Facebook.
         document.getElementById('status_div').innerHTML = '';
@@ -29,9 +32,11 @@ function handleLoginStatusResponse(response) {
     } else if (response.status === 'not_authorized') {
         // The person is logged into Facebook, but not the app.
         document.getElementById('status_div').innerHTML = 'Please log into this app.';
+        profileImageElement.src = placeholderUrl;
     } else {
         // The person is not logged into Facebook
         document.getElementById('status_div').innerHTML = 'Please log into Facebook.';
+        profileImageElement.src = placeholderUrl;
     }
 }
 
@@ -50,10 +55,8 @@ function createFinalImage(userID) {
         overlay.src = "images/overlay.png";
         overlay.onload = function() {
             context.drawImage(overlay, 0, 0);
-            var newProfPic = canvas.toDataURL();
-            var image = new Image();
-            image.src = canvas.toDataURL();
-            document.getElementById('profile_image_div').appendChild(image);
+            var profileImageElement = document.getElementById('profile_image');
+            profileImageElement.src = canvas.toDataURL();
         }
     }
 }

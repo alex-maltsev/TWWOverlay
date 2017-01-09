@@ -71,10 +71,27 @@ function uploadImage() {
     var xhr = new XMLHttpRequest();
     xhr.open('POST', 'upload.php');
     xhr.onload = function() {
-        console.log("Response received, with status " + xhr.status);
-        console.log(xhr.responseText);
+        if (xhr.status != 200) {
+            reportUploadError("Network error " + xhr.status);
+            return;
+        }
+        var response = JSON.parse(xhr.responseText);
+        console.log(response);
+        if (response.success) {
+            handleUploadSuccess(response.file);
+        } else {
+            reportUploadError(response.error);
+        }
     };    
     xhr.send(formData);
+}
+
+function handleUploadSuccess($file_name) {
+    console.log("Upload successful: " + $file_name); // TEMP
+}
+
+function reportUploadError(errorMessage) {
+    alert("Upload failed:\n" + errorMessage);
 }
 
 // From http://stackoverflow.com/a/30470303/2857040

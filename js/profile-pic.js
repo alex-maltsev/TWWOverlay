@@ -20,10 +20,13 @@ window.fbAsyncInit = function() {
 
 // Preferred profile image size
 var IMAGE_SIZE = 320;
+// Final image, i.e. profile image with overlay
+var finalImage;
 
 function handleLoginStatusResponse(response) {
     var profileImageElement = document.getElementById('profile_image');
     var placeholderUrl = "images/placeholder.png";
+    console.log("Facebook login status: " + JSON.stringify(response));
 
     if (response.status === 'connected') {
         // Logged into the app and Facebook.
@@ -55,10 +58,34 @@ function createFinalImage(userID) {
         overlay.src = "images/overlay.png";
         overlay.onload = function() {
             context.drawImage(overlay, 0, 0);
-            var profileImageElement = document.getElementById('profile_image');
-            profileImageElement.src = canvas.toDataURL();
+            finalImage = canvas.toDataURL('image/jpeg', 0.8);
+            document.getElementById('profile_image').src = finalImage;
         }
     }
+}
+
+function uploadImage() {
+    var formData = new FormData();
+    formData.append('img', dataURLtoBlob(finalImage));
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', 'upload.php');
+    xhr.onload = function() {
+        console.log("Response received, with status " + xhr.status);
+        console.log(xhr.responseText);
+    };    
+    xhr.send(formData);
+}
+
+// From http://stackoverflow.com/a/30470303/2857040
+function dataURLtoBlob(dataurl) {
+    var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+        bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+    console.log("MIME: " + mime + " , data length: " + n);
+    while(n--) {
+        u8arr[n] = bstr.charCodeAt(n);
+    }
+    return new Blob([u8arr], {type:mime});
 }
 
 function logIn() {

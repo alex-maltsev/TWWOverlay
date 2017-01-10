@@ -1,7 +1,15 @@
 <?php
+    // Making sure that we got the file
     $tmp_file_name = $_FILES['img']['tmp_name'];
     if ($tmp_file_name == NULL) {
         respondWithError("Didn't receive image file");
+        exit;
+    }
+
+    // Making sure that we got the access token
+    $token = $_POST['token'];
+    if ($token == NULL) {
+        respondWithError("Missing access token");
         exit;
     }
 

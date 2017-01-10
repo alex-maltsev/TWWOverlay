@@ -22,6 +22,8 @@ window.fbAsyncInit = function() {
 var IMAGE_SIZE = 320;
 // Final image, i.e. profile image with overlay
 var finalImage;
+// Object received from successful authorization (includes userID and access token)
+var authData;
 
 function handleLoginStatusResponse(response) {
     var profileImageElement = document.getElementById('profile_image');
@@ -31,7 +33,8 @@ function handleLoginStatusResponse(response) {
     if (response.status === 'connected') {
         // Logged into the app and Facebook.
         document.getElementById('status_div').innerHTML = '';
-        createFinalImage(response.authResponse.userID);
+        authData = response.authResponse;
+        createFinalImage(authData.userID);
     } else if (response.status === 'not_authorized') {
         // The person is logged into Facebook, but not the app.
         document.getElementById('status_div').innerHTML = 'Please log into this app.';
@@ -67,7 +70,8 @@ function createFinalImage(userID) {
 function uploadImage() {
     var formData = new FormData();
     formData.append('img', dataURLtoBlob(finalImage));
-
+    formData.append('token', authData.accessToken);
+    
     var xhr = new XMLHttpRequest();
     xhr.open('POST', 'upload.php');
     xhr.onload = function() {

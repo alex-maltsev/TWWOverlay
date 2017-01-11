@@ -16,15 +16,41 @@
     $file_name = 'uploads/'. uniqid() . '.jpg';
     $success = rename($tmp_file_name, $file_name);
     if ($success) {
+        chmod($file_name, 0644); // Enable read for everybody
         uploadImage($file_name, $token);
     } else {
         respondWithError("Unable to save image file");
     }
 
     function uploadImage($file_name, $token) {
+        // Initialize Facebook SDK
         require('Facebook/autoload.php');
         require('cred.php');
-        $arr = array('success' => TRUE, 'file' => $file_name);
+        $fb = new Facebook\Facebook([
+            'app_id' => $_APP_ID,
+            'app_secret' => $_APP_SECRET,
+            'default_graph_version' => 'v2.5',
+        ]);
+ 
+        $post_data = [
+            'message' => 'I support TWW!',
+            'source' => $fb->fileToUpload($_BASE_URL . $file_name)
+        ];
+
+        try {
+            // Returns a `Facebook\FacebookResponse` object
+            $response = $fb->post('/me/photos', $post_data, $token);
+        } catch(Facebook\Exceptions\FacebookResponseException $e) {
+            respondWithError('Facebook error: ' . $e->getMessage());
+            exit;
+        } catch(Facebook\Exceptions\FacebookSDKException $e) {
+            respondWithError('Facebook SDK error: ' . $e->getMessage());
+            exit;
+        }
+
+        $graphNode = $response->getGraphNode();
+
+        $arr = array('success' => TRUE, 'file' => $file_name, 'photo_id' => $graphNode['id']);
         echo json_encode($arr);
     }
 

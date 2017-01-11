@@ -16,10 +16,16 @@
     $file_name = 'uploads/'. uniqid() . '.jpg';
     $success = rename($tmp_file_name, $file_name);
     if ($success) {
+        uploadImage($file_name, $token);
+    } else {
+        respondWithError("Unable to save image file");
+    }
+
+    function uploadImage($file_name, $token) {
+        require('Facebook/autoload.php');
+        require('cred.php');
         $arr = array('success' => TRUE, 'file' => $file_name);
         echo json_encode($arr);
-     } else {
-        respondWithError("Unable to save image file");
     }
 
     function respondWithError($error_message) {

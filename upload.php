@@ -32,18 +32,22 @@
             'default_graph_version' => 'v2.5',
         ]);
  
-        $post_data = [
-            'message' => 'I support TWW!',
-            'source' => $fb->fileToUpload($_BASE_URL . $file_name)
-        ];
-
         try {
+            $post_data = [
+                'message' => 'I support TWW!',
+                'source' => $fb->fileToUpload($_BASE_URL . $file_name)
+            ];
             // Returns a `Facebook\FacebookResponse` object
             $response = $fb->post('/me/photos', $post_data, $token);
+            // Remove the image file from our server
+            // Should be okay because FB should have grabbed it by this point
+            unlink($file_name);
         } catch(Facebook\Exceptions\FacebookResponseException $e) {
+            unlink($file_name);
             respondWithError('Facebook error: ' . $e->getMessage());
             exit;
         } catch(Facebook\Exceptions\FacebookSDKException $e) {
+            unlink($file_name);
             respondWithError('Facebook SDK error: ' . $e->getMessage());
             exit;
         }

@@ -19,7 +19,7 @@ window.fbAsyncInit = function() {
 }(document, 'script', 'facebook-jssdk'));
 
 // Preferred profile image size
-var IMAGE_SIZE = 320;
+var IMAGE_SIZE = 480;
 // Final image, i.e. profile image with overlay
 var finalImage;
 // Object received from successful authorization (includes userID and access token)

@@ -42,13 +42,9 @@
             // Remove the image file from our server
             // Should be okay because FB should have grabbed it by this point
             unlink($file_name);
-        } catch(Facebook\Exceptions\FacebookResponseException $e) {
+        } catch (Exception $e) {
             unlink($file_name);
             respondWithError('Facebook error: ' . $e->getMessage());
-            exit;
-        } catch(Facebook\Exceptions\FacebookSDKException $e) {
-            unlink($file_name);
-            respondWithError('Facebook SDK error: ' . $e->getMessage());
             exit;
         }
 

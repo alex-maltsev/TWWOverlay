@@ -50,7 +50,7 @@
 
         $graphNode = $response->getGraphNode();
 
-        $arr = array('success' => TRUE, 'file' => $file_name, 'photo_id' => $graphNode['id']);
+        $arr = array('success' => TRUE, 'photo_id' => $graphNode['id']);
         echo json_encode($arr);
     }
 

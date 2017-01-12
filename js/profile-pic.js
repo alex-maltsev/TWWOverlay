@@ -82,7 +82,7 @@ function uploadImage() {
         var response = JSON.parse(xhr.responseText);
         console.log(response);
         if (response.success) {
-            handleUploadSuccess(response.file);
+            handleUploadSuccess(response.photo_id);
         } else {
             reportUploadError(response.error);
         }
@@ -90,8 +90,10 @@ function uploadImage() {
     xhr.send(formData);
 }
 
-function handleUploadSuccess($file_name) {
-    console.log("Upload successful: " + $file_name); // TEMP
+function handleUploadSuccess(photo_id) {
+    // Redirecting this window to Facebook page showing our just-uploaded image with overlay.
+    // There the user will be able to set it as their profile image.
+    document.location.assign("https://www.facebook.com/photo.php?fbid=" + photo_id + "&makeprofile=1");
 }
 
 function reportUploadError(errorMessage) {

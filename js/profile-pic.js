@@ -28,21 +28,32 @@ var authData;
 function handleLoginStatusResponse(response) {
     var profileImageElement = document.getElementById('profile_image');
     var placeholderUrl = "images/placeholder.png";
+    var statusDiv = document.getElementById('status_div');
+    var loginButton = document.getElementById('login_button');
+    var logoutButton = document.getElementById('logout_button');
+    var uploadButton = document.getElementById('upload_button');
+    
     console.log("Facebook login status: " + JSON.stringify(response));
 
     if (response.status === 'connected') {
         // Logged into the app and Facebook.
-        document.getElementById('status_div').innerHTML = '';
+        statusDiv.innerHTML = '';
         authData = response.authResponse;
         createFinalImage(authData.userID);
-    } else if (response.status === 'not_authorized') {
-        // The person is logged into Facebook, but not the app.
-        document.getElementById('status_div').innerHTML = 'Please log into this app.';
+        loginButton.style.display = "none";
+        logoutButton.style.display = "inline-block";
+        uploadButton.style.display = "inline-block";
+    } else { 
+        if (response.status === 'not_authorized') {
+            statusDiv.innerHTML = 'Please log into this app';
+        } else {
+            statusDiv.innerHTML = 'Please log into Facebook';
+        }
+       
         profileImageElement.src = placeholderUrl;
-    } else {
-        // The person is not logged into Facebook
-        document.getElementById('status_div').innerHTML = 'Please log into Facebook.';
-        profileImageElement.src = placeholderUrl;
+        loginButton.style.display = "inline-block";
+        logoutButton.style.display = "none";
+        uploadButton.style.display = "none";
     }
 }
 

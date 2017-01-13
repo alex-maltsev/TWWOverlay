@@ -1,0 +1,47 @@
+body {
+    font-family: 'Arial', sans-serif;
+    text-align: center;
+    margin: 0px 0px;
+}
+
+h1 {
+    font-size: 26pt;
+}
+
+#profile_image {
+    width: 280px;
+    height: 280px;
+    margin: 10px;
+    border-color: #777;
+}
+
+#logout_button {
+    display:none;
+    margin-top: 150px;
+    font-size: 13px;
+}
+
+#status_div {
+    padding: 20px;
+    font-size: 14px;
+    color: #f66;
+}
+
+.blue_button {
+    box-shadow: inset 0px 1px 0px 0px #7a8eb9;
+    background-color: #637aad;
+    border: 1px solid #314179;
+    display:none;
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: bold;
+    padding: 6px 12px;
+    text-decoration: none;
+}
+.blue_button:hover {
+	background-color: #5972a7;
+}
+.blue_button:active {
+	position: relative;
+	top: 1px;
+}

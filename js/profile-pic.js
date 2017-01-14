@@ -14,7 +14,7 @@ window.fbAsyncInit = function() {
      var js, fjs = d.getElementsByTagName(s)[0];
      if (d.getElementById(id)) {return;}
      js = d.createElement(s); js.id = id;
-     js.src = "http://connect.facebook.net/en_US/sdk.js";
+     js.src = 'http://connect.facebook.net/en_US/sdk.js';
      fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));
 
@@ -27,21 +27,21 @@ var authData;
 
 function handleLoginStatusResponse(response) {
     var profileImageElement = document.getElementById('profile_image');
-    var placeholderUrl = "images/placeholder.png";
+    var placeholderUrl = 'images/placeholder.png';
     var loginButton = document.getElementById('login_button');
     var logoutButton = document.getElementById('logout_button');
     var uploadButton = document.getElementById('upload_button');
     
-    console.log("Facebook login status: " + JSON.stringify(response));
+    console.log('Facebook login status: ' + JSON.stringify(response));
 
     if (response.status === 'connected') {
         // Logged into the app and Facebook.
         setAlertMessage('');
         authData = response.authResponse;
         createFinalImage(authData.userID);
-        loginButton.style.display = "none";
-        logoutButton.style.display = "inline-block";
-        uploadButton.style.display = "inline-block";
+        loginButton.style.display = 'none';
+        logoutButton.style.display = 'inline-block';
+        uploadButton.style.display = 'inline-block';
     } else { 
         if (response.status === 'not_authorized') {
             setAlertMessage('Please log into this app');
@@ -50,25 +50,26 @@ function handleLoginStatusResponse(response) {
         }
        
         profileImageElement.src = placeholderUrl;
-        loginButton.style.display = "inline-block";
-        logoutButton.style.display = "none";
-        uploadButton.style.display = "none";
+        loginButton.style.display = 'inline-block';
+        logoutButton.style.display = 'none';
+        uploadButton.style.display = 'none';
     }
 }
 
 function createFinalImage(userID) {
     var profilePic = new Image();
     profilePic.setAttribute('crossOrigin', 'anonymous');
-    profilePic.src = "http://graph.facebook.com/" + userID + "/picture?type=square&width=" + IMAGE_SIZE + "&height=" + IMAGE_SIZE;
+    profilePic.src = 'http://graph.facebook.com/' + userID 
+        + '/picture?type=square&width=' + IMAGE_SIZE + '&height=' + IMAGE_SIZE;
     
     profilePic.onload = function() {
-        canvas = document.createElement("canvas");
+        canvas = document.createElement('canvas');
         canvas.width = IMAGE_SIZE;
         canvas.height = IMAGE_SIZE;
-        var context = canvas.getContext("2d");
+        var context = canvas.getContext('2d');
         context.drawImage(profilePic, 0, 0, profilePic.width, profilePic.height, 0, 0, IMAGE_SIZE, IMAGE_SIZE);
         var overlay = new Image();
-        overlay.src = "images/overlay.png";
+        overlay.src = 'images/overlay.png';
         overlay.onload = function() {
             context.drawImage(overlay, 0, 0);
             finalImage = canvas.toDataURL('image/jpeg', 0.8);
@@ -89,7 +90,7 @@ function uploadImage() {
     xhr.onload = function() {
         makeSpinnerVisible(false);
         if (xhr.status != 200) {
-            reportUploadError("Network error " + xhr.status);
+            reportUploadError('Network error ' + xhr.status);
             return;
         }
         var response = JSON.parse(xhr.responseText);
@@ -106,7 +107,7 @@ function uploadImage() {
 function handleUploadSuccess(photo_id) {
     // Redirecting this window to Facebook page showing our just-uploaded image with overlay.
     // There the user will be able to set it as their profile image.
-    document.location.assign("https://www.facebook.com/photo.php?fbid=" + photo_id + "&makeprofile=1");
+    document.location.assign('https://www.facebook.com/photo.php?fbid=' + photo_id + '&makeprofile=1');
 }
 
 function reportUploadError(errorMessage) {
@@ -119,14 +120,13 @@ function setAlertMessage(message) {
 
 function makeSpinnerVisible(visible) {
     var spinner = document.getElementById('spinner');
-    spinner.style.display = (visible) ? "block" : "none";
+    spinner.style.display = (visible) ? 'block' : 'none';
 }
 
 // From http://stackoverflow.com/a/30470303/2857040
 function dataURLtoBlob(dataurl) {
     var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
         bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
-    console.log("MIME: " + mime + " , data length: " + n);
     while(n--) {
         u8arr[n] = bstr.charCodeAt(n);
     }
@@ -134,11 +134,11 @@ function dataURLtoBlob(dataurl) {
 }
 
 function logIn() {
-    FB.login(handleLoginStatusResponse, {scope: "user_photos,publish_actions"});
+    FB.login(handleLoginStatusResponse, {scope: 'user_photos,publish_actions'});
 }
 
 function logOut() {
-    FB.api("/me/permissions", "delete", function(response){ 
-        handleLoginStatusResponse({status: "not_authorized"});
+    FB.api('/me/permissions', 'delete', function(response){ 
+        handleLoginStatusResponse({status: 'not_authorized'});
     });
 }

@@ -17,12 +17,13 @@
     $success = rename($tmp_file_name, $file_name);
     if ($success) {
         chmod($file_name, 0644); // Enable read for everybody
-        uploadImage($file_name, $token);
+        $message = "I support TWW!";
+        uploadImage($file_name, $token, $message);
     } else {
         respondWithError("Unable to save image file");
     }
 
-    function uploadImage($file_name, $token) {
+    function uploadImage($file_name, $token, $message) {
         // Initialize Facebook SDK
         require('Facebook/autoload.php');
         require('cred.php');
@@ -34,7 +35,7 @@
  
         try {
             $post_data = [
-                'message' => 'I support TWW!',
+                'message' => $message,
                 'source' => $fb->fileToUpload($_BASE_URL . $file_name)
             ];
             // Returns a `Facebook\FacebookResponse` object

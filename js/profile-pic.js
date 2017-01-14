@@ -28,7 +28,6 @@ var authData;
 function handleLoginStatusResponse(response) {
     var profileImageElement = document.getElementById('profile_image');
     var placeholderUrl = "images/placeholder.png";
-    var statusDiv = document.getElementById('status_div');
     var loginButton = document.getElementById('login_button');
     var logoutButton = document.getElementById('logout_button');
     var uploadButton = document.getElementById('upload_button');
@@ -37,7 +36,7 @@ function handleLoginStatusResponse(response) {
 
     if (response.status === 'connected') {
         // Logged into the app and Facebook.
-        statusDiv.innerHTML = '';
+        setAlertMessage('');
         authData = response.authResponse;
         createFinalImage(authData.userID);
         loginButton.style.display = "none";
@@ -45,9 +44,9 @@ function handleLoginStatusResponse(response) {
         uploadButton.style.display = "inline-block";
     } else { 
         if (response.status === 'not_authorized') {
-            statusDiv.innerHTML = 'Please log into this app';
+            setAlertMessage('Please log into this app');
         } else {
-            statusDiv.innerHTML = 'Please log into Facebook';
+            setAlertMessage('Please log into Facebook');
         }
        
         profileImageElement.src = placeholderUrl;
@@ -83,9 +82,12 @@ function uploadImage() {
     formData.append('img', dataURLtoBlob(finalImage));
     formData.append('token', authData.accessToken);
     
+    makeSpinnerVisible(true);
+    setAlertMessage('');
     var xhr = new XMLHttpRequest();
     xhr.open('POST', 'upload.php');
     xhr.onload = function() {
+        makeSpinnerVisible(false);
         if (xhr.status != 200) {
             reportUploadError("Network error " + xhr.status);
             return;
@@ -108,7 +110,16 @@ function handleUploadSuccess(photo_id) {
 }
 
 function reportUploadError(errorMessage) {
-    alert("Upload failed:\n" + errorMessage);
+    setAlertMessage('Upload failed: ' + errorMessage)
+}
+
+function setAlertMessage(message) {
+    document.getElementById('status_div').innerHTML = message;
+}
+
+function makeSpinnerVisible(visible) {
+    var spinner = document.getElementById('spinner');
+    spinner.style.display = (visible) ? "block" : "none";
 }
 
 // From http://stackoverflow.com/a/30470303/2857040

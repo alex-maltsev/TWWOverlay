@@ -1,0 +1,6 @@
+# Ignore everything in this folder
+*
+# Except this file
+!.gitignore
+# This is a way to keep the empty 'uploads' folder under Git
+# Existence of this folder is important for correct functioning of upload.php

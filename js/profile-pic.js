@@ -1,6 +1,11 @@
+// Facebook app ID
+var APP_ID = '1199157660137686';
+// Preferred profile image size
+var IMAGE_SIZE = 480;
+
 window.fbAsyncInit = function() {
     FB.init({
-      appId      : '1199157660137686',
+      appId      : APP_ID,
       xfbml      : true,
       version    : 'v2.5'
     });
@@ -18,8 +23,6 @@ window.fbAsyncInit = function() {
      fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));
 
-// Preferred profile image size
-var IMAGE_SIZE = 480;
 // Final image, i.e. profile image with overlay
 var finalImage;
 // Object received from successful authorization (includes userID and access token)

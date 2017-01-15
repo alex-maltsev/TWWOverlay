@@ -15,7 +15,12 @@
         </div>
         
         <a href="javascript:logIn();" id="login_button" class="blue_button">Log In</a>
-        <a href="javascript:uploadImage();" id="upload_button" class="blue_button">Upload</a>
+        <div id="upload_div">
+            <textarea id="message_area" rows="3">I support TWW!</textarea><br>
+            <input type="checkbox" id="should_post_checkbox" checked>
+                <span id="should_post_label">Post about it to Facebook timeline</span><br>
+            <a href="javascript:uploadImage();" id="upload_button" class="blue_button">Upload</a>
+        </div>
         <div id="status_div"></div>
 
         <a href="javascript:logOut();" id="logout_button">Log Out</a>

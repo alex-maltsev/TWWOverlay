@@ -30,7 +30,7 @@ function handleLoginStatusResponse(response) {
     var placeholderUrl = 'images/placeholder.png';
     var loginButton = document.getElementById('login_button');
     var logoutButton = document.getElementById('logout_button');
-    var uploadButton = document.getElementById('upload_button');
+    var uploadDiv = document.getElementById('upload_div');
     
     console.log('Facebook login status: ' + JSON.stringify(response));
 
@@ -41,7 +41,7 @@ function handleLoginStatusResponse(response) {
         createFinalImage(authData.userID);
         loginButton.style.display = 'none';
         logoutButton.style.display = 'inline-block';
-        uploadButton.style.display = 'inline-block';
+        uploadDiv.style.display = 'block';
     } else { 
         if (response.status === 'not_authorized') {
             setAlertMessage('Please log into this app');
@@ -52,7 +52,7 @@ function handleLoginStatusResponse(response) {
         profileImageElement.src = placeholderUrl;
         loginButton.style.display = 'inline-block';
         logoutButton.style.display = 'none';
-        uploadButton.style.display = 'none';
+        uploadDiv.style.display = 'none';
     }
 }
 
@@ -79,11 +79,13 @@ function createFinalImage(userID) {
 }
 
 function uploadImage() {
+    var message = document.getElementById('message_area').value;
+    var shouldPost = document.getElementById('should_post_checkbox').checked;
     var formData = new FormData();
     formData.append('img', dataURLtoBlob(finalImage));
     formData.append('token', authData.accessToken);
-    formData.append('message', 'I support TWW!');
-    formData.append('should_post', false);
+    formData.append('message', message);
+    formData.append('should_post', shouldPost);
     
     makeSpinnerVisible(true);
     setAlertMessage('');

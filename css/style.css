@@ -20,8 +20,26 @@ h1 {
     border-color: #777;
 }
 
+#message_area {
+    width: 290px;
+    display: inline-block;
+    font-size: 14px;
+    padding: 5px;
+}
+
+#should_post_label {
+    display: inline-block;
+    font-size: 13px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+}
+
+#login_button {
+    display: none;
+}
+
 #logout_button {
-    display:none;
+    display: none;
     margin-top: 150px;
     font-size: 13px;
 }
@@ -36,7 +54,6 @@ h1 {
     box-shadow: inset 0px 1px 0px 0px #7a8eb9;
     background-color: #637aad;
     border: 1px solid #314179;
-    display:none;
     color: #ffffff;
     font-size: 13px;
     font-weight: bold;

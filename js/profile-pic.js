@@ -82,6 +82,8 @@ function uploadImage() {
     var formData = new FormData();
     formData.append('img', dataURLtoBlob(finalImage));
     formData.append('token', authData.accessToken);
+    formData.append('message', 'I support TWW!');
+    formData.append('should_post', false);
     
     makeSpinnerVisible(true);
     setAlertMessage('');

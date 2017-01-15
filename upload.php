@@ -13,17 +13,21 @@
         exit;
     }
 
+    // Moving image from temp folder to 'uploads' folder
     $file_name = 'uploads/'. uniqid() . '.jpg';
     $success = rename($tmp_file_name, $file_name);
     if ($success) {
         chmod($file_name, 0644); // Enable read for everybody
-        $message = "I support TWW!";
-        uploadImage($file_name, $token, $message);
+
+        $message = $_POST['message'];
+        if ($message == NULL) $message = '';
+        $should_post = ($_POST['should_post'] === 'true');
+        uploadImage($file_name, $token, $message, $should_post);
     } else {
         respondWithError("Unable to save image file");
     }
 
-    function uploadImage($file_name, $token, $message) {
+    function uploadImage($file_name, $token, $message, $should_post) {
         // Initialize Facebook SDK
         require('Facebook/autoload.php');
         require('cred.php');
@@ -36,7 +40,8 @@
         try {
             $post_data = [
                 'message' => $message,
-                'source' => $fb->fileToUpload($_BASE_URL . $file_name)
+                'source' => $fb->fileToUpload($_BASE_URL . $file_name),
+                'no_story' => !$should_post
             ];
             // Returns a `Facebook\FacebookResponse` object
             $response = $fb->post('/me/photos', $post_data, $token);
@@ -50,7 +55,6 @@
         }
 
         $graphNode = $response->getGraphNode();
-
         $arr = array('success' => TRUE, 'photo_id' => $graphNode['id']);
         echo json_encode($arr);
     }

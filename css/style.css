@@ -20,6 +20,10 @@ h1 {
     border-color: #777;
 }
 
+#upload_div {
+    display: none;
+}
+
 #message_area {
     width: 290px;
     display: inline-block;

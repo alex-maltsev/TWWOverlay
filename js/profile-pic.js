@@ -32,8 +32,6 @@ function handleLoginStatusResponse(response) {
     var logoutButton = document.getElementById('logout_button');
     var uploadDiv = document.getElementById('upload_div');
     
-    console.log('Facebook login status: ' + JSON.stringify(response));
-
     if (response.status === 'connected') {
         // Logged into the app and Facebook.
         setAlertMessage('');
@@ -78,7 +76,11 @@ function createFinalImage(userID) {
     }
 }
 
+var uploadInProgress = false;
+
 function uploadImage() {
+    if (uploadInProgress) return;
+
     var message = document.getElementById('message_area').value;
     var shouldPost = document.getElementById('should_post_checkbox').checked;
     var formData = new FormData();
@@ -89,10 +91,12 @@ function uploadImage() {
     
     makeSpinnerVisible(true);
     setAlertMessage('');
+    uploadInProgress = true;
     var xhr = new XMLHttpRequest();
     xhr.open('POST', 'upload.php');
     xhr.onload = function() {
         makeSpinnerVisible(false);
+        uploadInProgress = false;
         if (xhr.status != 200) {
             reportUploadError('Network error ' + xhr.status);
             return;

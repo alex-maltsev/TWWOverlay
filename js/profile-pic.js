@@ -80,18 +80,12 @@ var uploadInProgress = false;
 
 function uploadImage() {
     if (uploadInProgress) return;
-
-    var message = document.getElementById('message_area').value;
-    var shouldPost = document.getElementById('should_post_checkbox').checked;
-    var formData = new FormData();
-    formData.append('img', dataURLtoBlob(finalImage));
-    formData.append('token', authData.accessToken);
-    formData.append('message', message);
-    formData.append('should_post', shouldPost);
     
     makeSpinnerVisible(true);
     setAlertMessage('');
     uploadInProgress = true;
+
+    var formData = prepareUploadFormData();
     var xhr = new XMLHttpRequest();
     xhr.open('POST', 'upload.php');
     xhr.onload = function() {
@@ -102,7 +96,6 @@ function uploadImage() {
             return;
         }
         var response = JSON.parse(xhr.responseText);
-        console.log(response);
         if (response.success) {
             handleUploadSuccess(response.photo_id);
         } else {
@@ -110,6 +103,17 @@ function uploadImage() {
         }
     };    
     xhr.send(formData);
+}
+
+function prepareUploadFormData() {
+    var message = document.getElementById('message_area').value;
+    var shouldPost = document.getElementById('should_post_checkbox').checked;
+    var formData = new FormData();
+    formData.append('img', dataURLtoBlob(finalImage));
+    formData.append('token', authData.accessToken);
+    formData.append('message', message);
+    formData.append('should_post', shouldPost);
+    return formData;
 }
 
 function handleUploadSuccess(photo_id) {

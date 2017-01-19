@@ -2,6 +2,8 @@
 var APP_ID = '1199157660137686';
 // Preferred profile image size
 var IMAGE_SIZE = 480;
+// Default message for the text area
+var DEFAULT_MESSAGE = 'I support TWW!';
 
 window.fbAsyncInit = function() {
     FB.init({
@@ -42,6 +44,7 @@ function handleLoginStatusResponse(response) {
         createFinalImage(authData.userID);
         loginButton.style.display = 'none';
         logoutButton.style.display = 'inline-block';
+        document.getElementById('message_area').value = DEFAULT_MESSAGE;
         uploadDiv.style.display = 'block';
     } else { 
         if (response.status === 'not_authorized') {

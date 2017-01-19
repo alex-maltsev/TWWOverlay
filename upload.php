@@ -17,8 +17,6 @@
     $file_name = 'uploads/'. uniqid() . '.jpg';
     $success = rename($tmp_file_name, $file_name);
     if ($success) {
-        chmod($file_name, 0644); // Enable read for everybody
-
         $message = $_POST['message'];
         if ($message == NULL) $message = '';
         $should_post = ($_POST['should_post'] === 'true');
@@ -40,7 +38,7 @@
         try {
             $post_data = [
                 'message' => $message,
-                'source' => $fb->fileToUpload($_BASE_URL . $file_name),
+                'source' => $fb->fileToUpload($file_name),
                 'no_story' => !$should_post
             ];
             // Returns a `Facebook\FacebookResponse` object

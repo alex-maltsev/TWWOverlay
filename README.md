@@ -16,7 +16,6 @@ What is distinct here is how the work is shared between client-side (user's brow
 <?php
     $_APP_ID = 'your app ID';
     $_APP_SECRET = 'your app secret';
-    $_BASE_URL = 'http://yourserver.com/';
 ?>
 ```
 - **NOTE:** Server side uses Facebook PHP SDK, which requires PHP 5.4 or higher. So make sure that your server is running a suitable version of PHP.
@@ -28,6 +27,6 @@ What is distinct here is how the work is shared between client-side (user's brow
 4. When user presses 'Upload' button, it triggers a POST request to `upload.php`, carrying the following: actual image data (as binary blob), Facebook access token, post message, and a flag saying whether to post to timeline.
 5. `upload.php` performs the following actions:
   - Move received image file from system temp folder to `uploads` folder, renaming it to a unique number-based name.
-  - Make a call via Facebook SDK to upload the image to user's account. The only way to pass the image to Facebook is by giving it a URL from where the image can be downloaded, so we pass it the URL pointing to the image in `uploads` folder.
+  - Make a call via Facebook SDK to upload the image to user's account.
   - When the call to Facebook SDK completes the image file gets deleted from `uploads`. In case of success, `upload.php` responds with JSON containing the ID assigned to the uploaded image by Facebook. (In case of error, the script responds with JSON containing error message).
 6. If client size script receives successful response, it redirects the user to Facebook page showing the just-uploaded image. Unfortunately, **it is impossible to programmatically assign an image as profile image**, so the user will need to do that by hand on the page they see.

@@ -6,7 +6,7 @@ This project uses fragments of code from the following:
 - https://gist.github.com/chrisxwan/db1ffa00c739690c71a7
 - https://github.com/ashwin47/Fb-badge
 
-What is distinct here is how the work is shared between client-side (user's browser) and server side. The profile picture with added overlay is generated in the browser, thus saving a lot of CPU cycles for the server. The user can immediately see the resulting picture. If the user chooses to do so, they can upload the image to Facebook. This uploads the image to our server, makes it temporarily exposed "to the world", and ask Facebook to grab it. Indepently of the outcome, the image file gets immediately wiped off our server. (This is unlike in https://github.com/cmowenby/Profile-Picture-Overlay, where the server expects a special call from the client to delete the image file, which makes server more susceptible to malicious client behavior).
+What is distinct here is how the work is shared between client-side (user's browser) and server side. The profile picture with added overlay is generated in the browser, thus saving a lot of CPU cycles for the server. The user can immediately see the resulting picture. If the user chooses to do so, they can upload the image to Facebook. This uploads the image to our server, which temporarily stores it and passes it along to Facebook. Indepently of the outcome, the image file gets immediately wiped off our server. (This is unlike in https://github.com/cmowenby/Profile-Picture-Overlay, where the server expects a special call from the client to delete the image file, which makes server more susceptible to malicious client behavior).
 
 ## Setup
 - Register your app on Facebook. This will give you app ID and app secret.
